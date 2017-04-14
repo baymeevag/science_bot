@@ -1,0 +1,7 @@
+*.pyc
+*.db
+*.txt
+.DS_Store
+*.html
+./html_pages
+.ipynb_checkpoints
