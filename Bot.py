@@ -47,7 +47,7 @@ class MarkovBot:
     
     def get_tweet(self):
         tweet = self.generate()
-        while len(tweet) > 140 or len(tweet.split()) < 4:
+        while len(tweet.decode('utf8')) > 140 or len(tweet.split()) < 7:
             tweet = self.generate()
         return tweet
         
@@ -57,9 +57,8 @@ class MarkovBot:
             self.api.update_status(tweet) # Posts to twitter
             time.sleep(self.sleep_timer)
 
+
 if __name__ == '__main__':
     bot = MarkovBot('./consumer_key_secret.txt', './cyberleninka_all.txt', 3)
     bot.run()
-
-
 
