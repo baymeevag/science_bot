@@ -1,10 +1,5 @@
-
-# coding: utf-8
-
-# In[5]:
-
 from random import randint, choice
-import tweepy, time, webbrowser, re, request
+import tweepy, time, webbrowser, re
 
 class MarkovBot:
     def __init__(self, path_to_secret, path_to_corpus, tweets_a_day): # path to corpus
@@ -37,7 +32,7 @@ class MarkovBot:
                 self.start_words.append(words[0])
                 n = len(words)
                 for word1, word2 in zip(words[:(n - 1)], words[1:]):
-                    if word1 in self.corpus:
+                    if word1 in self.transition:
                         self.transition[word1].append(word2)
                     else:
                         self.transition[word1] = [word2]
@@ -52,7 +47,7 @@ class MarkovBot:
     
     def get_tweet(self):
         tweet = self.generate()
-        while len(tweet) > 140:
+        while len(tweet) > 140 or len(tweet.split()) < 4:
             tweet = self.generate()
         return tweet
         
@@ -62,20 +57,9 @@ class MarkovBot:
             self.api.update_status(tweet) # Posts to twitter
             time.sleep(self.sleep_timer)
 
-
-# In[8]:
-
 if __name__ == '__main__':
     bot = MarkovBot('./consumer_key_secret.txt', './cyberleninka_all.txt', 3)
     bot.run()
-
-
-# In[ ]:
-
-bot.run()
-
-
-# In[ ]:
 
 
 
