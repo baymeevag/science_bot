@@ -5,3 +5,6 @@
 *.html
 ./html_pages
 .ipynb_checkpoints
+cyberleninka_all
+test
+*.zip
