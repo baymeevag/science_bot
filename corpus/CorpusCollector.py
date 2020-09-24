@@ -1,14 +1,14 @@
 import requests
 import os
 import sys
-sys.path.append('../')
+sys.path.append('.')
+sys.path.append('..')
 import re
 from bs4 import BeautifulSoup
 import pandas as pd
 import pickle
 from utils.logger_config import logger_config
 from utils.config import HOST, FILE_FORMAT, FILE_POSTFIX, DB_LOCATION, COLUMNS
-
 
 class CorpusCollector:
     """
@@ -41,7 +41,7 @@ class CorpusCollector:
         articles = [article.text for article in article_list]
 
         if len(articles) == 0:
-            raise Exception(f'Reached the end of {topic}')
+            raise Exception(f'Reached the end of {self.topic}')
 
         articles_df = pd.DataFrame(
             {

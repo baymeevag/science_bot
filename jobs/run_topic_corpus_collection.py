@@ -1,5 +1,6 @@
 import sys
-sys.path.append('../')
+sys.path.append('.')
+sys.path.append('..')
 from corpus.CorpusCollector import CorpusCollector
 
 if __name__ == '__main__':
