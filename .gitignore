@@ -1,10 +1,4 @@
-*.pyc
-*.db
-*.txt
-.DS_Store
-*.html
-./html_pages
-.ipynb_checkpoints
-cyberleninka_all
-test
-*.zip
+__pycache__
+.vscode
+db
+keys.sh

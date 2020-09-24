@@ -1,29 +1,15 @@
 from random import randint, choice
 import tweepy, time, webbrowser, re
+from auth import oauth
 
 class MarkovBot:
     def __init__(self, path_to_secret, path_to_corpus, tweets_a_day): # path to corpus
         self.sleep_timer = int(60 * 60 * tweets_a_day)
         self.transition = {}
         self.start_words = []
-        self.api = tweepy.API()
+        self.api = oauth()
         self.oauth(path_to_secret)
         self.init_corpus(path_to_corpus)
-        
-    def oauth(self, path_to_secret):
-        with open(path_to_secret) as f:
-            consumer_key_secret = f.readlines()
-        consumer_key_secret = [x.strip() for x in consumer_key_secret] 
-        consumer_key = consumer_key_secret[0]
-        consumer_secret = consumer_key_secret[1]
-        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        auth_url = auth.get_authorization_url()
-        webbrowser.open(auth_url)
-        verifier = raw_input('PIN: ').strip()
-        auth.get_access_token(verifier)
-        with open('./access_key_secret.txt', 'w') as f:
-            f.write(auth.access_token + '\n' + auth.access_token_secret)
-        self.api = tweepy.API(auth)
         
     def init_corpus(self, path_to_corpus):
         with open(path_to_corpus, 'r') as f:
