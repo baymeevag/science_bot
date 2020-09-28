@@ -1,4 +1,5 @@
 __pycache__
 .vscode
 db
-keys.sh
+keys.py
+*.env

@@ -1,8 +1,9 @@
-import requests
-import os
 import sys
 sys.path.append('.')
 sys.path.append('..')
+
+import requests
+import os
 import re
 from bs4 import BeautifulSoup
 import pandas as pd
