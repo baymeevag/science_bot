@@ -24,6 +24,8 @@ class CorpusCollector:
             DB_LOCATION,
             f'{self.topic}{FILE_POSTFIX}.{FILE_FORMAT}'
             )
+        if not os.path.exists(DB_LOCATION):
+            os.mkdir(DB_LOCATION)
     
     def get_dump_or_create_new(self):
         if os.path.exists(self.file_name):
