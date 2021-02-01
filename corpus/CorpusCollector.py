@@ -16,7 +16,7 @@ class CorpusCollector:
     Creates a corpus of articles from scratch or appends new articles to an existing one.
     One collector for each topic
     """
-    def __init__(self, topic):
+    def __init__(self, topic: str):
         self.logger = logger_config()
         self.schema = COLUMNS
         self.topic = topic
@@ -27,7 +27,7 @@ class CorpusCollector:
         if not os.path.exists(DB_LOCATION):
             os.mkdir(DB_LOCATION)
     
-    def get_dump_or_create_new(self):
+    def get_dump_or_create_new(self) -> pd.DataFrame:
         if os.path.exists(self.file_name):
             articles_df = pd.read_csv(self.file_name)
             self.max_page = articles_df['page'].max()
@@ -37,7 +37,7 @@ class CorpusCollector:
 
         return articles_df
 
-    def parse_page(self, page):
+    def parse_page(self, page: int) -> pd.DataFrame:
         url = '/'.join([HOST, self.topic, str(page)])
         soup = BeautifulSoup(requests.get(url).content, 'lxml')
         article_list = soup.findAll('div', {'class': 'title'})
@@ -57,7 +57,7 @@ class CorpusCollector:
 
         return articles_df
 
-    def get_new_articles(self):
+    def get_new_articles(self) -> pd.DataFrame:
         df = pd.DataFrame(columns=COLUMNS)
 
         page = self.max_page
@@ -69,14 +69,13 @@ class CorpusCollector:
                 articles_df = self.parse_page(page)
                 df = df.append(articles_df)
                 page += 1
-            except (KeyboardInterrupt, Exception) as e:
-                print(e)
+            except:
                 self.logger.info(f'Max page is {page - 1}')
                 break
 
         return df
 
-    def dump(self, df):
+    def dump(self, df: pd.DataFrame):
         df \
             .reset_index(drop=True) \
             .to_csv(self.file_name, index=False)
