@@ -9,7 +9,7 @@ async-timeout==3.0.1
 attrs==20.3.0
 backcall==0.2.0
 beautifulsoup4==4.9.3
-bleach==3.2.1
+bleach==3.3.0
 Brotli==1.0.9
 cachetools==4.2.0
 catboost==0.24.4
