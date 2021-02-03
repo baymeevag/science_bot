@@ -1,7 +1,7 @@
 import logging
 
 def logger_config():
-    logger = logging.getLogger("raz'eb")
+    logger = logging.getLogger("logger")
     logger.setLevel(logging.INFO)
 
     consoleHandler = logging.StreamHandler()

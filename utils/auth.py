@@ -1,13 +1,13 @@
 import tweepy
-from decouple import config
+import os
 
 def oauth():
     auth = tweepy.OAuthHandler(
-        config('TWITTER_CONSUMER_KEY'),
-        config('TWITTER_CONSUMER_SECRET')
+        os.environ['TWITTER_CONSUMER_KEY'],
+        os.environ['TWITTER_CONSUMER_SECRET']
         )
     auth.set_access_token(
-        config('TWITTER_ACCESS_KEY'), 
-        config('TWITTER_ACCESS_SECRET'))
+        os.environ['TWITTER_ACCESS_KEY'], 
+        os.environ['TWITTER_ACCESS_SECRET'])
 
     return tweepy.API(auth)
