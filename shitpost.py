@@ -1,14 +1,15 @@
 import sys
+import time
 from utils.auth import oauth
+from utils.config import TOPIC, INTERVAL
 from generators.Markov import Markov
 
 if __name__ == '__main__':
-    topic = sys.argv[1]
-
-    bot = Markov(topic)
-
-    tweet = bot.get_tweet()
-
     api = oauth()
+    bot = Markov(TOPIC)
 
-    api.update_status(tweet)
+    while True:
+        tweet = bot.get_tweet()
+        api.update_status(tweet)
+        time.sleep(INTERVAL)
+        
