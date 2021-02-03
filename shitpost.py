@@ -5,7 +5,7 @@ from generators.Markov import Markov
 if __name__ == '__main__':
     topic = sys.argv[1]
 
-    bot =  Markov(topic)
+    bot = Markov(topic)
 
     tweet = bot.get_tweet()
 
