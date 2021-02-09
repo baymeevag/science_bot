@@ -4,11 +4,11 @@ import time
 import pandas as pd
 import os
 from corpus.CorpusCollector import CorpusCollector
+from utils.config import START_TOKEN, END_TOKEN
 
 class Markov:
     def __init__(self, topic): # path to corpus
         self.transition = {}
-        self.start_words = []
         self._init_corpus(topic)
         
     def _init_corpus(self, topic):
@@ -16,8 +16,7 @@ class Markov:
         corpus = pd.read_csv(collector.file_name)['article_name'].values
         
         for line in corpus:
-            words = line.split()
-            self.start_words.append(words[0])
+            words = [START_TOKEN] + line.split() + [END_TOKEN]
             for word1, word2 in zip(words[:-1], words[1:]):
                 if word1 in self.transition:
                     self.transition[word1].append(word2)
@@ -25,15 +24,17 @@ class Markov:
                     self.transition[word1] = [word2]
                         
     def generate(self):
-        current_word = choice(self.start_words)
-        result = [current_word]
-        while current_word in self.transition.keys() and self.transition[current_word]:
+        result = [START_TOKEN]
+        current_word = result[-1]
+        while current_word in self.transition.keys() and \
+                self.transition[current_word] and \
+                current_word != END_TOKEN:
             current_word = choice(self.transition[current_word])
             result.append(current_word)
-        return ' '.join(result)
+        return ' '.join(result[1:-1])
     
     def get_tweet(self):
         tweet = self.generate()
-        while len(tweet) > 140 or len(tweet.split()) < 7:
+        while len(tweet) > 140 or len(tweet.split()) < 5:
             tweet = self.generate()
         return tweet
