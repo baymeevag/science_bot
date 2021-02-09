@@ -4,3 +4,4 @@ __pycache__
 db
 settings.ini
 env
+utils/proxies.csv

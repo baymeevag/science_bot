@@ -1,15 +1,11 @@
 import sys
-sys.path.append('.')
-sys.path.append('..')
-
+import logging
 import requests
 import os
-import re
 from bs4 import BeautifulSoup
 import pandas as pd
-import pickle
-from utils.logger_config import logger_config
-from utils.config import HOST, FILE_FORMAT, FILE_POSTFIX, DB_LOCATION, COLUMNS
+import numpy as np
+from utils.config import HOST, FILE_FORMAT, FILE_POSTFIX, DB_LOCATION, COLUMNS, PROXIES
 
 class CorpusCollector:
     """
@@ -17,15 +13,23 @@ class CorpusCollector:
     One collector for each topic
     """
     def __init__(self, topic: str):
-        self.logger = logger_config()
-        self.schema = COLUMNS
         self.topic = topic
+        self.db_path = os.path.join(
+            os.path.abspath('./'),
+            DB_LOCATION)
+
+        if not os.path.exists(self.db_path):
+            os.mkdir(self.db_path)
+
         self.file_name = os.path.join(
-            DB_LOCATION,
+            self.db_path,
             f'{self.topic}{FILE_POSTFIX}.{FILE_FORMAT}'
             )
-        if not os.path.exists(DB_LOCATION):
-            os.mkdir(DB_LOCATION)
+
+        self.session = requests.session()
+        self.session.mount(HOST, adapter=requests.adapters.HTTPAdapter(max_retries=5))
+
+        self.max_page = 1
     
     def get_dump_or_create_new(self) -> pd.DataFrame:
         if os.path.exists(self.file_name):
@@ -39,7 +43,13 @@ class CorpusCollector:
 
     def parse_page(self, page: int) -> pd.DataFrame:
         url = '/'.join([HOST, self.topic, str(page)])
-        soup = BeautifulSoup(requests.get(url).content, 'lxml')
+
+        proxy_dict = {
+            "https": np.random.choice(PROXIES)
+            }
+
+        response = self.session.get(url, proxies=proxy_dict, timeout=1)
+        soup = BeautifulSoup(response.content, 'lxml')
         article_list = soup.findAll('div', {'class': 'title'})
         articles = [article.text for article in article_list]
 
@@ -57,7 +67,7 @@ class CorpusCollector:
 
         return articles_df
 
-    def get_new_articles(self) -> pd.DataFrame:
+    def collect(self) -> pd.DataFrame:
         df = pd.DataFrame(columns=COLUMNS)
 
         page = self.max_page
@@ -65,12 +75,12 @@ class CorpusCollector:
         while True:
             try:
                 if not page % 100:
-                    self.logger.info(page)
+                    logging.info(page)
                 articles_df = self.parse_page(page)
                 df = df.append(articles_df)
                 page += 1
             except:
-                self.logger.info(f'Max page is {page - 1}')
+                logging.info(f'Max page is {page - 1}')
                 break
 
         return df

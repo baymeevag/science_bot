@@ -2,9 +2,7 @@ from random import randint, choice
 import tweepy
 import time
 import pandas as pd
-import re
 import os
-import sys
 from corpus.CorpusCollector import CorpusCollector
 
 class Markov:
