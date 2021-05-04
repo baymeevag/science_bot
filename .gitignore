@@ -5,3 +5,4 @@ nbs/.ipynb_checkpoints
 settings.ini
 env
 .DS_Store
+db
