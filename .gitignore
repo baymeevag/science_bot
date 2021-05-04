@@ -2,7 +2,6 @@ __pycache__
 .ipynb_checkpoints
 nbs/.ipynb_checkpoints
 .vscode
-db
 settings.ini
 env
 .DS_Store
