@@ -44,11 +44,7 @@ class CorpusCollector:
     def parse_page(self, page: int) -> pd.DataFrame:
         url = '/'.join([HOST, self.topic, str(page)])
 
-        proxy_dict = {
-            "https": np.random.choice(PROXIES)
-            }
-
-        response = self.session.get(url, proxies=proxy_dict, timeout=1)
+        response = self.session.get(url)
         soup = BeautifulSoup(response.content, 'lxml')
         article_list = soup.findAll('div', {'class': 'title'})
         articles = [article.text for article in article_list]
