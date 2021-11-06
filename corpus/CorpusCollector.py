@@ -14,9 +14,9 @@ class CorpusCollector:
     """
     def __init__(self, topic: str):
         self.topic = topic
-        self.db_path = os.path.join(
-            os.path.abspath('./'),
-            DB_LOCATION)
+        file_dir = os.path.split(os.path.abspath(__file__))[0]
+        project_dir = os.path.split(file_dir)[0]
+        self.db_path = os.path.join(project_dir, DB_LOCATION)
 
         if not os.path.exists(self.db_path):
             os.mkdir(self.db_path)

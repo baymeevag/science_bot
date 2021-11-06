@@ -1,5 +1,5 @@
 # Science bot
-Twitter bot that generates math articles' names (in Russian) (https://twitter.com/math_rus)
+Twitter bot that generates math articles' names (in Russian) (https://twitter.com/neural_maths)
 
 There are three components to this bot:
 
