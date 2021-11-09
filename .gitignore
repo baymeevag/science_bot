@@ -6,3 +6,4 @@ settings.ini
 env
 .DS_Store
 db
+*.pyc

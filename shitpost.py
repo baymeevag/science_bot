@@ -1,5 +1,3 @@
-import sys
-import time
 from utils.auth import oauth
 from utils.config import TOPIC
 from generators.Markov import Markov

@@ -35,6 +35,6 @@ class Markov:
     
     def get_tweet(self):
         tweet = self.generate()
-        while len(tweet) > 140 or len(tweet.split()) < 5:
+        while len(tweet) > 140 or len(tweet.split()) < 7:
             tweet = self.generate()
         return tweet
