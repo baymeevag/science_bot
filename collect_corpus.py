@@ -1,7 +1,7 @@
 import sys
 from corpus.CorpusCollector import CorpusCollector
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     topic = sys.argv[1]
 
     collector = CorpusCollector(topic)
